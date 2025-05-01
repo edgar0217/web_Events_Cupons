@@ -1,0 +1,8 @@
+<% contacts.forEach(contact => { %>
+<a href="<%= contact.url %>" target="_blank" style="text-decoration: none">
+  <div class="contact-card">
+    <img src="<%= contact.img %>" alt="<%= contact.alt %>" />
+    <p><%= contact.label %></p>
+  </div>
+</a>
+<% }); %>

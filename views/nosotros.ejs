@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= nombrePagina %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/nosotros.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <%- include('partials/sidebar') %>
+
+    <section class="home-section">
+      <div class="text txtmenu2">Nosotros</div>
+
+      <section class="contact-section">
+        <%- include('partials/social-links', { contacts: contacts }) %>
+      </section>
+    </section>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/script2.js"></script>
+  </body>
+</html>

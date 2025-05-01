@@ -1,0 +1,52 @@
+<!-- views/cupones.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= nombrePagina %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/cupones.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100">
+    <%- include('partials/sidebar') %>
+    <section class="home-section">
+      <div class="text txtmenu2 text-3xl font-bold text-gray-800 p-6">
+        Cupones Disponibles
+      </div>
+
+      <section class="p-6" id="cupones-list">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          <% listaCupones.forEach(cupones => { %>
+          <div
+            tabindex="-1"
+            class="bg-white border border-gray-200 rounded-xl shadow p-5 hover:shadow-lg transition duration-300 select-none focus:outline-none cursor-default"
+          >
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">
+              <%= cupones.titulo %>
+            </h2>
+            <p class="text-gray-600 mb-3"><%= cupones.descripcion %></p>
+            <p
+              class="text-blue-700 font-mono bg-blue-50 px-3 py-1 rounded inline-block"
+            >
+              <%= cupones.codigo_cupon %>
+            </p>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+    </section>
+
+    <!-- Scripts -->
+    <script src="/js/script.js"></script>
+    <script src="/js/script2.js"></script>
+  </body>
+</html>

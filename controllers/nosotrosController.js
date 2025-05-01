@@ -13,7 +13,7 @@ const mostrarNosotros = (req, res) => {
       label: "Correo",
     },
     {
-      url: "https://wa.me/527821356726?text=Hola,%20quiero%20más%20información",
+      url: "https://wa.me/521234567890?text=Hola,%20quiero%20más%20información",
       img: "https://cdn-icons-png.flaticon.com/512/733/733585.png",
       alt: "WhatsApp",
       label: "WhatsApp",

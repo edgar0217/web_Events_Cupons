@@ -11,11 +11,11 @@ const Evento = db.define(
       allowNull: true,
     },
     titulo: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     descripcion: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     imagen_url: {
@@ -23,7 +23,6 @@ const Evento = db.define(
       allowNull: true,
     },
     imagen_public_id: {
-      // <-- agregamos esta columna
       type: DataTypes.STRING,
       allowNull: false,
     },

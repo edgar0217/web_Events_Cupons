@@ -9,30 +9,7 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        background-image: url("/img/decoracion.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-
-      .hamburger span {
-        transition: all 0.3s ease;
-      }
-
-      .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translateY(8px);
-      }
-
-      .hamburger.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translateY(-8px);
-      }
-    </style>
+    <link rel="stylesheet" href="/css/indexcss.css" />
   </head>
   <body class="min-h-screen text-gray-800 pt-20">
     <!-- Barra de navegación -->
@@ -61,7 +38,7 @@
         <!-- Menú de navegación -->
         <ul
           id="menu"
-          class="transition-all duration-300 ease-in-out transform scale-95 opacity-0 md:opacity-100 md:scale-100 hidden md:flex flex-col md:flex-row md:items-center md:space-x-6 space-y-2 md:space-y-0 text-sm text-gray-700 text-center absolute md:static top-full left-0 w-full md:w-auto bg-white/30 md:bg-transparent backdrop-blur-md md:backdrop-blur-none md:shadow-none shadow-md py-4 md:py-0"
+          class="hidden md:flex flex-col md:flex-row md:items-center md:space-x-6 space-y-2 md:space-y-0 text-sm text-gray-700 text-center absolute md:static top-full left-0 w-full md:w-auto bg-white/30 md:bg-transparent backdrop-blur-md md:backdrop-blur-none md:shadow-none shadow-md py-4 md:py-0"
         >
           <li>
             <a href="/" class="block px-4 py-2 hover:underline">Inicio</a>
@@ -112,9 +89,8 @@
           class="w-48 h-32 shadow-md object-cover border border-gray-300"
         />
       </div>
-
-      <!-- Contenido textual -->
-      <div class="text-center md:text-left max-w-xl">
+      <!-- Contenido textual con reproductor adaptado -->
+      <div class="text-center md:text-left max-w-xl w-full">
         <p class="text-sm text-gray-600 mb-2">Versión 1.0</p>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-[#0f172a] mb-4">
           Radio Digital IESPR
@@ -122,49 +98,64 @@
         <p class="text-base text-gray-700 mb-6">
           ¡Todo lo que tienes que hacer es disfrutar de nuestra programación!
         </p>
+
+        <!-- Reproductor rediseñado -->
         <div
-          class="flex flex-col sm:flex-row justify-center md:justify-start gap-4"
+          class="bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-6 border border-gray-300 flex flex-col sm:flex-row items-center gap-4"
         >
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <i class="bx bx-radio text-4xl text-[#0f172a]"></i>
+            <div class="text-left">
+              <h2 class="text-lg font-semibold text-gray-800">Radio IESPR</h2>
+              <p class="text-sm text-gray-500">En vivo ahora</p>
+            </div>
+          </div>
+
+          <!-- Botón de control -->
+          <div class="mt-4 sm:mt-0 sm:ml-auto">
+            <button
+              id="customPlay"
+              class="bg-black hover:bg-gray-900 text-white p-3 rounded-full shadow transition"
+              aria-label="Play"
+            >
+              <i class="bx bx-play text-xl" id="playIcon"></i>
+            </button>
+          </div>
+
+          <!-- Audio oculto -->
+          <audio id="radioPlayer" playsinline>
+            <source
+              src="https://stream.zeno.fm/wc0lhuuv1nkvv"
+              type="audio/aac"
+            />
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+        </div>
+
+        <!-- Botones de acciones -->
+        <div
+          class="flex flex-col sm:flex-row justify-center md:justify-start items-center gap-4 mt-6"
+        >
+          <a
+            href="https://radioiespr.cloud/privacy-policy.html"
+            target="_blank"
+            class="text-sm text-gray-700 hover:underline flex items-center gap-1"
+          >
+            Políticas de privacidad <span>→</span>
+          </a>
+
           <button
+            id="customPlay2"
             class="bg-black text-white px-5 py-2 rounded shadow hover:bg-gray-900 text-sm"
           >
-            Obtener gratis
-          </button>
-          <button
-            class="text-sm text-gray-700 hover:underline flex items-center gap-1 justify-center"
-          >
-            Saber más <span>→</span>
+            Escuchar Ahora
           </button>
         </div>
       </div>
     </section>
 
-    <script>
-      const menuToggle = document.getElementById("menu-toggle");
-      const menu = document.getElementById("menu");
-
-      menuToggle.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-
-        if (!menu.classList.contains("hidden")) {
-          setTimeout(() => {
-            menu.classList.remove("opacity-0", "scale-95");
-            menu.classList.add("opacity-100", "scale-100");
-            menu.classList.remove("bg-white/30", "backdrop-blur-md");
-            menu.classList.add("bg-white");
-          }, 10);
-        } else {
-          menu.classList.remove("opacity-100", "scale-100", "bg-white");
-          menu.classList.add(
-            "opacity-0",
-            "scale-95",
-            "bg-white/30",
-            "backdrop-blur-md"
-          );
-        }
-
-        menuToggle.classList.toggle("active");
-      });
-    </script>
+    <script src="/js/indexjs.js"></script>
   </body>
 </html>
+
+<!-- esete es el bueno -->

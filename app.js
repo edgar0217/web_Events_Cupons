@@ -1,11 +1,15 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import session from "express-session";
+
 import indexRoutes from "./routes/index.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import db from "./db/db.js";
-import session from "express-session";
-import dotenv from "dotenv";
+
+import noCache from "./middlewares/noCache.js";
+import sessionTimeout from "./middlewares/sessionTimeout.js";
 
 dotenv.config();
 
@@ -29,15 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate"
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  next();
-});
+app.use(noCache);
 
 app.use(
   session({
@@ -52,25 +48,7 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  const tiempoMaximo = 30 * 60 * 1000;
-  const ahora = Date.now();
-
-  if (req.session.user) {
-    if (
-      req.session.lastActivity &&
-      ahora - req.session.lastActivity > tiempoMaximo
-    ) {
-      req.session.destroy(() => {
-        return res.redirect("/login?error=sesion_expirada");
-      });
-    } else {
-      req.session.lastActivity = ahora;
-    }
-  }
-
-  next();
-});
+app.use(sessionTimeout);
 
 app.use("/", indexRoutes);
 app.use("/", dashboardRoutes);

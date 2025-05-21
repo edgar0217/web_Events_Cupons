@@ -17,7 +17,7 @@ async function initializeAdmin() {
 
       if (!passwordFromEnv) {
         console.error(
-          "ERROR: No se definió la contraseña superadmin en variables de entorno"
+          "ERROR: No se definió la contraseña admin en variables de entorno"
         );
         process.exit(1);
       }

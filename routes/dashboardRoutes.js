@@ -24,8 +24,13 @@ router.post(
   editarEvento
 );
 
-router.post("/cupones", protegerRuta, crearCupon);
+router.post("/cupones", protegerRuta, upload.single("imagen"), crearCupon);
 router.post("/cupones/:id/delete", protegerRuta, eliminarCupon);
-router.post("/cupones/:id/edit", protegerRuta, editarCupon);
+router.post(
+  "/cupones/:id/edit",
+  protegerRuta,
+  upload.single("imagen"),
+  editarCupon
+);
 
 export default router;

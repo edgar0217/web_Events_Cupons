@@ -14,12 +14,16 @@ const mostrarDashboard = async (req, res) => {
   });
 };
 
+//CRUD DE EVENTOS
+
 const crearEvento = async (req, res) => {
-  const { titulo, descripcion } = req.body;
+  const { titulo, descripcion, redirectTo } = req.body;
   const imagen = req.file;
 
+  const redirectPath = redirectTo || "/dashboard";
+
   if (!imagen) {
-    return res.redirect("/dashboard?error=subida_imagen");
+    return res.redirect(`${redirectPath}?error=subida_imagen`);
   }
 
   try {
@@ -30,20 +34,23 @@ const crearEvento = async (req, res) => {
       imagen_public_id: imagen.filename,
     });
 
-    res.redirect("/dashboard?success=evento_creado");
+    res.redirect(`${redirectPath}?success=evento_creado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=crear_evento");
+    res.redirect(`${redirectPath}?error=crear_evento`);
   }
 };
 
 const eliminarEvento = async (req, res) => {
   const { id } = req.params;
+  const { redirectTo } = req.body; // Puedes enviar redirectTo aquí también si es POST
+  const redirectPath = redirectTo || "/dashboard";
 
   try {
     const evento = await eventos.findByPk(id);
 
-    if (!evento) return res.redirect("/dashboard?error=evento_no_encontrado");
+    if (!evento)
+      return res.redirect(`${redirectPath}?error=evento_no_encontrado`);
 
     if (evento.imagen_public_id) {
       await cloudinary.uploader.destroy(evento.imagen_public_id);
@@ -51,21 +58,24 @@ const eliminarEvento = async (req, res) => {
 
     await eventos.destroy({ where: { id } });
 
-    res.redirect("/dashboard?success=evento_eliminado");
+    res.redirect(`${redirectPath}?success=evento_eliminado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=eliminar_evento");
+    res.redirect(`${redirectPath}?error=eliminar_evento`);
   }
 };
 
 const editarEvento = async (req, res) => {
   const { id } = req.params;
-  const { titulo, descripcion } = req.body;
+  const { titulo, descripcion, redirectTo } = req.body;
   const imagen = req.file;
+
+  const redirectPath = redirectTo || "/dashboard";
 
   try {
     const evento = await eventos.findByPk(id);
-    if (!evento) return res.redirect("/dashboard?error=evento_no_encontrado");
+    if (!evento)
+      return res.redirect(`${redirectPath}?error=evento_no_encontrado`);
 
     evento.titulo = titulo;
     evento.descripcion = descripcion;
@@ -80,58 +90,94 @@ const editarEvento = async (req, res) => {
 
     await evento.save();
 
-    res.redirect("/dashboard?success=evento_editado");
+    res.redirect(`${redirectPath}?success=evento_editado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=editar_evento");
+    res.redirect(`${redirectPath}?error=editar_evento`);
   }
 };
 
+//CRUD CUPONES
+
 const crearCupon = async (req, res) => {
-  const { titulo, descripcion, codigo_cupon } = req.body;
+  const { titulo, descripcion, codigo_cupon, redirectTo } = req.body;
+  const imagen = req.file;
+
+  const redirectPath = redirectTo || "/dashboard";
 
   try {
-    await cupones.create({ titulo, descripcion, codigo_cupon });
-    res.redirect("/dashboard?success=cupon_creado");
+    let newCupon = {
+      titulo,
+      descripcion,
+      codigo_cupon,
+    };
+
+    if (imagen) {
+      newCupon.imagen_url = imagen.path;
+      newCupon.imagen_public_id = imagen.filename;
+    }
+
+    await cupones.create(newCupon);
+    res.redirect(`${redirectPath}?success=cupon_creado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=crear_cupon");
+    res.redirect(`${redirectPath}?error=crear_cupon`);
   }
 };
 
 const editarCupon = async (req, res) => {
   const { id } = req.params;
-  const { titulo, descripcion, codigo_cupon } = req.body;
+  const { titulo, descripcion, codigo_cupon, redirectTo } = req.body;
+  const imagen = req.file;
+
+  const redirectPath = redirectTo || "/dashboard";
 
   try {
     const cupon = await cupones.findByPk(id);
-    if (!cupon) return res.redirect("/dashboard?error=cupon_no_encontrado");
+    if (!cupon)
+      return res.redirect(`${redirectPath}?error=cupon_no_encontrado`);
 
     cupon.titulo = titulo;
     cupon.descripcion = descripcion;
     cupon.codigo_cupon = codigo_cupon;
+
+    if (imagen) {
+      if (cupon.imagen_public_id) {
+        await cloudinary.uploader.destroy(cupon.imagen_public_id);
+      }
+      cupon.imagen_url = imagen.path;
+      cupon.imagen_public_id = imagen.filename;
+    }
+
     await cupon.save();
 
-    res.redirect("/dashboard?success=cupon_editado");
+    res.redirect(`${redirectPath}?success=cupon_editado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=editar_cupon");
+    res.redirect(`${redirectPath}?error=editar_cupon`);
   }
 };
 
 const eliminarCupon = async (req, res) => {
   const { id } = req.params;
+  const { redirectTo } = req.body;
+  const redirectPath = redirectTo || "/dashboard";
 
   try {
     const cupon = await cupones.findByPk(id);
-    if (!cupon) return res.redirect("/dashboard?error=cupon_no_encontrado");
+    if (!cupon)
+      return res.redirect(`${redirectPath}?error=cupon_no_encontrado`);
+
+    if (cupon.imagen_public_id) {
+      await cloudinary.uploader.destroy(cupon.imagen_public_id);
+    }
 
     await cupones.destroy({ where: { id } });
 
-    res.redirect("/dashboard?success=cupon_eliminado");
+    res.redirect(`${redirectPath}?success=cupon_eliminado`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=eliminar_cupon");
+    res.redirect(`${redirectPath}?error=eliminar_cupon`);
   }
 };
 

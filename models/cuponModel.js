@@ -20,6 +20,14 @@ const cupones = db.define("cupones", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  imagen_url: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  imagen_public_id: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 export default cupones;

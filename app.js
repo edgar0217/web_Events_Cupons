@@ -3,13 +3,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import session from "express-session";
-
 import indexRoutes from "./routes/index.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import db from "./db/db.js";
-
 import noCache from "./middlewares/noCache.js";
 import sessionTimeout from "./middlewares/sessionTimeout.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -32,7 +31,6 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(noCache);
 
 app.use(
@@ -49,7 +47,7 @@ app.use(
 );
 
 app.use(sessionTimeout);
-
+app.use("/", authRoutes);
 app.use("/", indexRoutes);
 app.use("/", dashboardRoutes);
 

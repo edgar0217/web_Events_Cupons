@@ -1,7 +1,7 @@
 const mostrarNosotros = (req, res) => {
   const contacts = [
     {
-      url: "https://www.facebook.com/",
+      url: "https://www.facebook.com/iesproficial#",
       img: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
       alt: "Facebook",
       label: "Facebook",
@@ -13,13 +13,13 @@ const mostrarNosotros = (req, res) => {
       label: "Correo",
     },
     {
-      url: "https://wa.me/521234567890?text=Hola,%20quiero%20más%20información",
+      url: "https://wa.me/527821293422?text=Hola,%20quiero%20más%20información",
       img: "https://cdn-icons-png.flaticon.com/512/733/733585.png",
       alt: "WhatsApp",
       label: "WhatsApp",
     },
     {
-      url: "https://www.instagram.com/",
+      url: "https://www.instagram.com/iespr_oficial/",
       img: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png",
       alt: "Instagram",
       label: "Instagram",

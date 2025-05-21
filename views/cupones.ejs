@@ -1,4 +1,3 @@
-<!-- views/cupones.html -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -6,100 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= nombrePagina %></title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/indexcss.css" />
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        background-image: url("/img/decoracion.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-
-      .hamburger span {
-        transition: all 0.3s ease;
-      }
-
-      .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translateY(8px);
-      }
-
-      .hamburger.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translateY(-8px);
-      }
-    </style>
   </head>
   <body class="min-h-screen text-gray-800 pt-20">
     <!-- Barra de navegación -->
-    <nav
-      class="fixed top-0 left-0 w-full z-50 bg-white/30 backdrop-blur-md shadow border-b border-gray-300"
-    >
-      <div
-        class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"
-      >
-        <div class="flex items-center space-x-2">
-          <i class="bx bxs-microphone-alt"></i>
-          <span class="text-lg font-semibold text-gray-900">IESPR</span>
-        </div>
+    <%- include("partials/navbar") %>
 
-        <!-- Botón hamburguesa -->
-        <button
-          id="menu-toggle"
-          class="hamburger md:hidden flex flex-col items-center justify-center w-8 h-8 space-y-1.5"
-          aria-label="Abrir menú"
-        >
-          <span class="block w-6 h-0.5 bg-gray-800"></span>
-          <span class="block w-6 h-0.5 bg-gray-800"></span>
-          <span class="block w-6 h-0.5 bg-gray-800"></span>
-        </button>
-
-        <!-- Menú de navegación -->
-        <ul
-          id="menu"
-          class="transition-all duration-300 ease-in-out transform scale-95 opacity-0 md:opacity-100 md:scale-100 hidden md:flex flex-col md:flex-row md:items-center md:space-x-6 space-y-2 md:space-y-0 text-sm text-gray-700 text-center absolute md:static top-full left-0 w-full md:w-auto bg-white/30 md:bg-transparent backdrop-blur-md md:backdrop-blur-none md:shadow-none shadow-md py-4 md:py-0"
-        >
-          <li>
-            <a href="/" class="block px-4 py-2 hover:underline">Inicio</a>
-          </li>
-          <li>
-            <a href="/cupones" class="block px-4 py-2 hover:underline"
-              >Cupones</a
-            >
-          </li>
-          <li>
-            <a href="/eventos" class="block px-4 py-2 hover:underline"
-              >Eventos</a
-            >
-          </li>
-          <li>
-            <a href="/nosotros" class="block px-4 py-2 hover:underline"
-              >Nosotros</a
-            >
-          </li>
-          <li class="md:hidden">
-            <a
-              href="/login"
-              class="bg-black text-white px-4 py-2 rounded hover:bg-gray-900 text-sm w-full block"
-              >Iniciar sesión</a
-            >
-          </li>
-        </ul>
-
-        <!-- Botón visible solo en escritorio -->
-        <a
-          href="/login"
-          class="hidden md:inline-block bg-black text-white px-4 py-2 rounded hover:bg-gray-900 text-sm"
-        >
-          Iniciar sesión
-        </a>
-      </div>
-    </nav>
     <!-- Sección principal de cupones -->
     <section class="px-6 md:px-12 lg:px-24 py-16">
       <div class="text-center mb-10">
@@ -116,14 +31,22 @@
       >
         <% listaCupones.forEach(cupones => { %>
         <div
-          class="bg-white/80 backdrop-blur-md border border-gray-200 rounded-xl shadow p-5 hover:shadow-lg transition duration-300"
+          class="bg-white/80 backdrop-blur-md border border-gray-200 rounded-xl shadow p-5 transform transition duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
         >
+          <% if (cupones.imagen_url) { %>
+          <img
+            src="<%= cupones.imagen_url %>"
+            alt="Imagen del cupón <%= cupones.titulo %>"
+            class="w-full h-32 object-cover rounded-lg mb-4"
+          />
+          <% } %>
           <h2 class="text-lg font-semibold text-gray-800 mb-2">
             <%= cupones.titulo %>
           </h2>
           <p class="text-gray-600 mb-3"><%= cupones.descripcion %></p>
           <p
-            class="text-blue-700 font-mono bg-blue-100 px-3 py-1 rounded inline-block"
+            class="text-blue-700 font-mono bg-blue-100 px-4 py-2 rounded inline-block text-xl font-bold tracking-wider select-all"
+            title="Código de cupón"
           >
             <%= cupones.codigo_cupon %>
           </p>
@@ -132,32 +55,6 @@
       </div>
     </section>
 
-    <script>
-      const menuToggle = document.getElementById("menu-toggle");
-      const menu = document.getElementById("menu");
-
-      menuToggle.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-
-        if (!menu.classList.contains("hidden")) {
-          setTimeout(() => {
-            menu.classList.remove("opacity-0", "scale-95");
-            menu.classList.add("opacity-100", "scale-100");
-            menu.classList.remove("bg-white/30", "backdrop-blur-md");
-            menu.classList.add("bg-white");
-          }, 10);
-        } else {
-          menu.classList.remove("opacity-100", "scale-100", "bg-white");
-          menu.classList.add(
-            "opacity-0",
-            "scale-95",
-            "bg-white/30",
-            "backdrop-blur-md"
-          );
-        }
-
-        menuToggle.classList.toggle("active");
-      });
-    </script>
+    <script src="/js/indexjs.js"></script>
   </body>
 </html>

@@ -20,6 +20,40 @@ function confirmarEliminacionUsuario(id) {
   });
 }
 
+function confirmarEliminacion(id) {
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¡Esta acción no se puede deshacer!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById(`form-eliminar-${id}`).submit();
+    }
+  });
+}
+
+function confirmarEliminacionCupon(id) {
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¡Esta acción no se puede deshacer!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById(`form-eliminar-cupon-${id}`).submit();
+    }
+  });
+}
+
 // Toggle contraseña tabla desktop
 function togglePassword(id) {
   const input = document.getElementById(`pass-${id}`);

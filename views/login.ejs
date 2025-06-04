@@ -58,14 +58,24 @@
             >
               Contraseña
             </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="••••••••"
-              required
-              class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
-            />
+            <div class="relative">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                required
+                class="w-full p-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
+              />
+              <button
+                type="button"
+                id="togglePassword"
+                class="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700"
+              >
+                <i class="bx bx-show"></i>
+                <!-- Icono para mostrar -->
+              </button>
+            </div>
           </div>
 
           <button
@@ -98,6 +108,22 @@
           confirmButtonText: "Entendido",
         });
       }
+
+      // Función para mostrar/ocultar la contraseña
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordField = document.getElementById("password");
+
+      togglePassword.addEventListener("click", function () {
+        // Cambiar tipo de input entre password y text
+        const type = passwordField.type === "password" ? "text" : "password";
+        passwordField.type = type;
+
+        // Cambiar el icono del botón
+        this.innerHTML =
+          type === "password"
+            ? '<i class="bx bx-show"></i>'
+            : '<i class="bx bx-hide"></i>';
+      });
     </script>
   </body>
 </html>

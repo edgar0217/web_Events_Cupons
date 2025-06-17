@@ -11,6 +11,7 @@ const db = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "mysql",
+    logging: false, // Desactiva los logs de consultas SQL en la consola
     define: {
       timestamps: true,
     },

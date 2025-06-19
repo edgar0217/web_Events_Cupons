@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/userModel.js";
 import Evento from "../models/eventoModel.js";
 import Cupon from "../models/cuponModel.js";
+import Patrocinador from "../models/patrocinadorModel.js";
 
 export const mostrarLogin = (req, res) => {
   res.render("login", { error: null });
@@ -49,12 +50,14 @@ export const mostrarSuperAdmin = async (req, res) => {
     });
     const listaEventos = await Evento.findAll(); // Aquí cargas eventos
     const listaCupones = await Cupon.findAll(); // Aquí cupones
+    const listaPatrocinadores = await Patrocinador.findAll(); // <--- AGREGA ESTO
 
     res.render("superadmin", {
       user: req.session.user,
       usuarios,
       listaEventos, // envías eventos a la vista
       listaCupones, // envías cupones a la vista
+      listaPatrocinadores,
       error: null,
     });
   } catch (error) {

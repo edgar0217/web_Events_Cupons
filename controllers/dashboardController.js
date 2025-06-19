@@ -1,15 +1,18 @@
 import eventos from "../models/eventoModel.js";
 import cloudinary from "../utils/cloudinary.js";
 import cupones from "../models/cuponModel.js";
+import Patrocinador from "../models/patrocinadorModel.js";
 
 const mostrarDashboard = async (req, res) => {
   const listaEventos = await eventos.findAll();
   const listaCupones = await cupones.findAll();
+  const listaPatrocinadores = await Patrocinador.findAll();
 
   res.render("dashboard", {
     nombrePagina: "Dashboard",
     listaEventos,
     listaCupones,
+    listaPatrocinadores,
     user: req.user,
   });
 };

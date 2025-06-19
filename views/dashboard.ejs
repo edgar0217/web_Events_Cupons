@@ -420,6 +420,194 @@
           <% }) %>
         </div>
       </section>
+      <!-- Patrocinadores -->
+      <section class="mb-16">
+        <h2
+          class="text-2xl sm:text-3xl font-bold mb-6 text-indigo-700 flex items-center gap-3"
+        >
+          <i class="bx bx-handshake text-2xl sm:text-3xl"></i> Patrocinadores
+        </h2>
+
+        <!-- Formulario CREAR Patrocinador mejorado -->
+        <form
+          id="form-crear-patrocinador"
+          action="/patrocinadores"
+          method="POST"
+          enctype="multipart/form-data"
+          class="flex flex-col sm:flex-row items-center gap-4 mb-8 bg-white p-6 rounded-2xl shadow-lg"
+          onsubmit="return confirmCrearPatrocinador(event)"
+        >
+          <!-- Campo nombre -->
+          <div class="flex-1 w-full">
+            <label
+              for="nombrePatrocinador"
+              class="block text-sm font-medium text-indigo-700 mb-1"
+              >Nombre del patrocinador</label
+            >
+            <input
+              id="nombrePatrocinador"
+              type="text"
+              name="nombre"
+              placeholder="Ejemplo: Coca-Cola"
+              required
+              class="w-full p-3 border-2 border-indigo-200 rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none transition"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- Campo imagen custom -->
+          <div class="flex flex-col items-center gap-1">
+            <label class="block text-sm font-medium text-indigo-700 mb-1"
+              >Imagen</label
+            >
+            <button
+              type="button"
+              onclick="document.getElementById('inputImagenPatrocinador').click();"
+              class="flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 border-2 border-dashed border-indigo-400 rounded-xl px-6 py-3 cursor-pointer transition group shadow"
+            >
+              <svg
+                class="w-7 h-7 text-indigo-500 group-hover:text-indigo-700 transition"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16V4a1 1 0 012 0v12m4 0v-4a1 1 0 012 0v4m1 4H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v11a2 2 0 01-2 2z"
+                />
+              </svg>
+              <span
+                class="text-xs font-semibold text-indigo-700 group-hover:text-indigo-900 transition"
+                >Subir Imagen</span
+              >
+            </button>
+            <span
+              id="fileNameCrear"
+              class="text-[10px] text-gray-500 mt-1"
+            ></span>
+            <input
+              type="file"
+              id="inputImagenPatrocinador"
+              name="imagen"
+              accept="image/*"
+              required
+              class="hidden"
+              onchange="updateFileNameCrear()"
+            />
+          </div>
+
+          <!-- Botón enviar -->
+          <button
+            class="bg-indigo-600 hover:bg-indigo-700 transition text-white px-6 py-3 rounded-xl font-bold shadow mt-4 sm:mt-0"
+            type="submit"
+          >
+            <i class="bx bx-upload align-middle text-lg"></i>
+            Crear
+          </button>
+          <input type="hidden" name="redirectTo" value="/dashboard" />
+        </form>
+
+        <!-- LISTA Patrocinadores -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% if (listaPatrocinadores && listaPatrocinadores.length > 0) { %> <%
+          listaPatrocinadores.forEach(pat => { %>
+          <div
+            class="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center group hover:shadow-xl transition-all"
+          >
+            <img
+              src="<%= pat.imagen_url %>"
+              alt="Imagen patrocinador"
+              class="w-32 h-32 object-cover rounded-full mb-2 border-4 border-indigo-100 group-hover:border-indigo-400 transition"
+            />
+            <h3
+              class="text-lg font-bold mb-2 text-indigo-700 group-hover:text-indigo-900 transition"
+            >
+              <%= pat.nombre %>
+            </h3>
+            <!-- FORMULARIO Editar -->
+            <form
+              action="/patrocinadores/<%= pat.id %>/edit"
+              method="POST"
+              enctype="multipart/form-data"
+              class="w-full space-y-2 mb-2"
+              onsubmit="return confirmEditarPatrocinador(event)"
+            >
+              <input
+                type="text"
+                name="nombre"
+                value="<%= pat.nombre %>"
+                required
+                class="w-full p-2 border rounded-md"
+              />
+              <button
+                type="button"
+                onclick="document.getElementById('inputImagenEdit<%= pat.id %>').click();"
+                class="w-full flex items-center gap-2 justify-center bg-yellow-50 hover:bg-yellow-100 border-2 border-dashed border-yellow-400 rounded-xl px-3 py-2 cursor-pointer transition"
+              >
+                <svg
+                  class="w-5 h-5 text-yellow-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16V4a1 1 0 012 0v12m4 0v-4a1 1 0 012 0v4m1 4H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v11a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <span class="text-xs font-semibold text-yellow-700"
+                  >Cambiar Imagen</span
+                >
+              </button>
+              <span
+                id="fileNameEdit<%= pat.id %>"
+                class="text-[10px] text-gray-500"
+              ></span>
+              <input
+                type="file"
+                id="inputImagenEdit<%= pat.id %>"
+                name="imagen"
+                accept="image/*"
+                class="hidden"
+                onchange="updateFileNameEdit(<%= pat.id %>)"
+              />
+              <input type="hidden" name="redirectTo" value="/dashboard" />
+              <button
+                class="bg-yellow-500 hover:bg-yellow-600 text-white w-full rounded py-1 mt-2 font-bold"
+                type="submit"
+              >
+                Guardar cambios
+              </button>
+            </form>
+            <!-- FORMULARIO Eliminar -->
+            <form
+              action="/patrocinadores/<%= pat.id %>/delete"
+              method="POST"
+              class="w-full"
+              onsubmit="return confirmarEliminarPatrocinador(event)"
+            >
+              <input type="hidden" name="redirectTo" value="/dashboard" />
+              <button
+                class="bg-red-500 hover:bg-red-600 text-white w-full rounded py-1 mt-1 font-bold"
+                type="submit"
+              >
+                Eliminar
+              </button>
+            </form>
+          </div>
+          <% }) %> <% } else { %>
+          <div
+            class="col-span-full text-center text-gray-400 font-semibold py-8"
+          >
+            No hay patrocinadores aún.
+          </div>
+          <% } %>
+        </div>
+      </section>
     </div>
 
     <!-- Scripts -->
@@ -483,6 +671,85 @@
         setupPreview('fileInputCuponSelectorEdit<%= cupon.id %>', 'previewCuponEdit<%= cupon.id %>', 'fileInputCuponCamaraEdit<%= cupon.id %>');
         setupPreview('fileInputCuponCamaraEdit<%= cupon.id %>', 'previewCuponEdit<%= cupon.id %>', 'fileInputCuponSelectorEdit<%= cupon.id %>');
       <% }) %>
+    </script>
+    <script>
+      // Mostrar el nombre del archivo seleccionado para crear
+      function updateFileNameCrear() {
+        const input = document.getElementById("inputImagenPatrocinador");
+        const fileNameSpan = document.getElementById("fileNameCrear");
+        if (input.files && input.files[0]) {
+          fileNameSpan.textContent = input.files[0].name;
+        }
+      }
+
+      // Mostrar el nombre del archivo seleccionado para editar
+      function updateFileNameEdit(id) {
+        const input = document.getElementById("inputImagenEdit" + id);
+        const fileNameSpan = document.getElementById("fileNameEdit" + id);
+        if (input.files && input.files[0]) {
+          fileNameSpan.textContent = input.files[0].name;
+        }
+      }
+
+      // Confirmación con SweetAlert2 al crear patrocinador
+      function confirmCrearPatrocinador(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: "¿Crear patrocinador?",
+          text: "¿Seguro que quieres agregar este patrocinador?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#6366F1",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, crear",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            e.target.submit();
+          }
+        });
+        return false; // evita envío por default
+      }
+
+      // Confirmación con SweetAlert2 al editar patrocinador
+      function confirmEditarPatrocinador(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: "¿Guardar cambios?",
+          text: "¿Seguro que quieres guardar los cambios?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#F59E42",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, guardar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            e.target.submit();
+          }
+        });
+        return false;
+      }
+
+      // Confirmación con SweetAlert2 al eliminar patrocinador
+      function confirmarEliminarPatrocinador(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: "¿Eliminar patrocinador?",
+          text: "Esta acción no se puede deshacer",
+          icon: "error",
+          showCancelButton: true,
+          confirmButtonColor: "#EF4444",
+          cancelButtonColor: "#aaa",
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            e.target.submit();
+          }
+        });
+        return false;
+      }
     </script>
   </body>
 </html>

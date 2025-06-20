@@ -53,3 +53,117 @@ menuToggle.addEventListener("click", () => {
 });
 customPlay2.addEventListener("click", togglePlay);
 customPlay.addEventListener("click", togglePlay);
+
+// --------- PC ---------
+let currentPC = 0;
+const itemsPC = document.querySelectorAll(
+  "#carruselPatrocinadoresPC .patrocinador-item-pc"
+);
+const dotsPC = document.querySelectorAll(".carrusel-dot-pc");
+const totalPC = itemsPC.length;
+let intervalPC;
+
+function showItemPC(idx) {
+  itemsPC.forEach((el, i) => {
+    el.style.opacity = i === idx ? "1" : "0";
+    el.style.pointerEvents = i === idx ? "auto" : "none";
+  });
+  if (dotsPC.length) {
+    dotsPC.forEach((d, i) => {
+      d.style.background = i === idx ? "#4f46e5" : "#c7d2fe";
+      d.style.borderColor = i === idx ? "#4f46e5" : "#a5b4fc";
+    });
+  }
+  currentPC = idx;
+}
+function carruselNextPC() {
+  showItemPC((currentPC + 1) % totalPC);
+  resetIntervalPC();
+}
+function carruselPrevPC() {
+  showItemPC((currentPC - 1 + totalPC) % totalPC);
+  resetIntervalPC();
+}
+function carruselGoToPC(idx) {
+  showItemPC(idx);
+  resetIntervalPC();
+}
+function resetIntervalPC() {
+  clearInterval(intervalPC);
+  intervalPC = setInterval(() => carruselNextPC(), 3000);
+}
+if (totalPC > 1) {
+  intervalPC = setInterval(() => carruselNextPC(), 3000);
+  window.carruselNextPC = carruselNextPC;
+  window.carruselPrevPC = carruselPrevPC;
+  window.carruselGoToPC = carruselGoToPC;
+}
+
+// --------- MOVIL ---------
+let currentMOVIL = 0;
+const itemsMOVIL = document.querySelectorAll(
+  "#carruselPatrocinadoresMOVIL .patrocinador-item-movil"
+);
+const dotsMOVIL = document.querySelectorAll(".carrusel-dot-movil");
+const totalMOVIL = itemsMOVIL.length;
+let intervalMOVIL;
+
+function showItemMOVIL(idx) {
+  itemsMOVIL.forEach((el, i) => {
+    el.style.opacity = i === idx ? "1" : "0";
+    el.style.pointerEvents = i === idx ? "auto" : "none";
+  });
+  if (dotsMOVIL.length) {
+    dotsMOVIL.forEach((d, i) => {
+      d.style.background = i === idx ? "#4f46e5" : "#c7d2fe";
+      d.style.borderColor = i === idx ? "#4f46e5" : "#a5b4fc";
+    });
+  }
+  currentMOVIL = idx;
+}
+function carruselNextMOVIL() {
+  showItemMOVIL((currentMOVIL + 1) % totalMOVIL);
+  resetIntervalMOVIL();
+}
+function carruselPrevMOVIL() {
+  showItemMOVIL((currentMOVIL - 1 + totalMOVIL) % totalMOVIL);
+  resetIntervalMOVIL();
+}
+function carruselGoToMOVIL(idx) {
+  showItemMOVIL(idx);
+  resetIntervalMOVIL();
+}
+function resetIntervalMOVIL() {
+  clearInterval(intervalMOVIL);
+  intervalMOVIL = setInterval(() => carruselNextMOVIL(), 3000);
+}
+if (totalMOVIL > 1) {
+  intervalMOVIL = setInterval(() => carruselNextMOVIL(), 3000);
+  window.carruselNextMOVIL = carruselNextMOVIL;
+  window.carruselPrevMOVIL = carruselPrevMOVIL;
+  window.carruselGoToMOVIL = carruselGoToMOVIL;
+}
+
+// Mantener altura adecuada en ambos carruseles
+function ajustarCarruselAltura() {
+  const contenedorPC = document.getElementById("carruselPatrocinadoresPC");
+  if (contenedorPC) {
+    let maxH = 0;
+    itemsPC.forEach((el) => {
+      if (el.offsetHeight > maxH) maxH = el.offsetHeight;
+    });
+    contenedorPC.style.height = maxH + "px";
+  }
+  const contenedorMOVIL = document.getElementById(
+    "carruselPatrocinadoresMOVIL"
+  );
+  if (contenedorMOVIL) {
+    let maxH = 0;
+    itemsMOVIL.forEach((el) => {
+      if (el.offsetHeight > maxH) maxH = el.offsetHeight;
+    });
+    contenedorMOVIL.style.height = maxH + "px";
+  }
+}
+window.addEventListener("resize", ajustarCarruselAltura);
+window.addEventListener("DOMContentLoaded", ajustarCarruselAltura);

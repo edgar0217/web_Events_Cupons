@@ -10,6 +10,11 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <style>
+      .modal-bg {
+        background: rgba(30, 41, 59, 0.85);
+      }
+    </style>
   </head>
   <body class="min-h-screen text-gray-800 pt-20">
     <!-- Barra de navegación -->
@@ -29,32 +34,107 @@
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
-        <% listaCupones.forEach(cupones => { %>
+        <% listaCupones.forEach(function(cupones, i) { %> <% const soloImagen =
+        cupones.imagen_url && !cupones.titulo && !cupones.descripcion &&
+        !cupones.codigo_cupon; %>
         <div
-          class="bg-white/80 backdrop-blur-md border border-gray-200 rounded-xl shadow p-5 transform transition duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
+          class="bg-white/80 backdrop-blur-md border border-gray-200 rounded-xl shadow p-5 transform transition duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 flex flex-col items-center"
         >
-          <% if (cupones.imagen_url) { %>
+          <% if (soloImagen) { %>
+          <button
+            onclick="abrirModal(<%= i %>)"
+            class="w-full flex justify-center outline-none"
+            title="Ver imagen en grande"
+          >
+            <img
+              src="<%= cupones.imagen_url %>"
+              alt="Cupón"
+              class="w-full max-w-xs h-56 object-cover rounded-xl border-4 border-indigo-100 shadow-lg transition hover:shadow-2xl hover:scale-105 cursor-zoom-in"
+            />
+          </button>
+          <% } else { %> <% if (cupones.imagen_url) { %>
           <img
             src="<%= cupones.imagen_url %>"
             alt="Imagen del cupón <%= cupones.titulo %>"
-            class="w-full h-32 object-cover rounded-lg mb-4"
+            class="w-full h-32 object-cover rounded-lg mb-4 border border-gray-100 shadow"
           />
-          <% } %>
+          <% } %> <% if (cupones.titulo) { %>
           <h2 class="text-lg font-semibold text-gray-800 mb-2">
             <%= cupones.titulo %>
           </h2>
+          <% } %> <% if (cupones.descripcion) { %>
           <p class="text-gray-600 mb-3"><%= cupones.descripcion %></p>
+          <% } %> <% if (cupones.codigo_cupon) { %>
           <p
             class="text-blue-700 font-mono bg-blue-100 px-4 py-2 rounded inline-block text-xl font-bold tracking-wider select-all"
             title="Código de cupón"
           >
             <%= cupones.codigo_cupon %>
           </p>
+          <% } %> <% } %>
         </div>
         <% }) %>
       </div>
     </section>
 
+    <!-- MODAL de imagen para SOLO-IMAGEN -->
+    <div
+      id="modalImg"
+      class="fixed inset-0 z-50 flex items-center justify-center hidden"
+    >
+      <div
+        class="modal-bg absolute inset-0 w-full h-full"
+        onclick="cerrarModal()"
+      ></div>
+      <div class="relative max-w-xl w-full flex flex-col items-center">
+        <button
+          onclick="cerrarModal()"
+          class="absolute right-2 top-2 text-white text-2xl p-2 bg-black/60 rounded-full hover:bg-black transition z-10"
+        >
+          <i class="bx bx-x"></i>
+        </button>
+        <img
+          id="imgGrande"
+          src=""
+          alt="Cupón ampliado"
+          class="rounded-2xl border-4 border-indigo-100 shadow-2xl max-h-[80vh] bg-white"
+        />
+      </div>
+    </div>
+
+    <script>
+      // MODAL solo para cupones de solo imagen
+      const imagenes = [
+        <% listaCupones.forEach(function(c, i) { %>
+          <% if (c.imagen_url && !c.titulo && !c.descripcion && !c.codigo_cupon) { %>
+            "<%= c.imagen_url %>",
+          <% } %>
+        <% }) %>
+      ];
+      // Mapeo: índice del array de cupones => índice en imagenes[]
+      const mapaCuponImg = {};
+      <% let imgIdx = 0; listaCupones.forEach(function(c, i) { if (c.imagen_url && !c.titulo && !c.descripcion && !c.codigo_cupon) { %>
+        mapaCuponImg[<%= i %>] = <%= imgIdx %>;
+        <% imgIdx++; %>
+      <% } }) %>
+
+      function abrirModal(idx) {
+        const modal = document.getElementById('modalImg');
+        const img = document.getElementById('imgGrande');
+        img.src = imagenes[mapaCuponImg[idx]];
+        modal.classList.remove('hidden');
+      }
+      function cerrarModal() {
+        const modal = document.getElementById('modalImg');
+        const img = document.getElementById('imgGrande');
+        img.src = '';
+        modal.classList.add('hidden');
+      }
+      // Cierra modal con escape
+      window.addEventListener('keydown', e => {
+        if(e.key === "Escape") cerrarModal();
+      });
+    </script>
     <script src="/js/indexjs.js"></script>
   </body>
 </html>

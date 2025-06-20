@@ -22,7 +22,6 @@
       >
         Próximos Eventos
       </h2>
-
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto"
       >
@@ -61,7 +60,7 @@
       class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden"
     >
       <div
-        class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto p-6 relative mx-4 shadow-xl"
+        class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto p-0 relative mx-4 shadow-xl flex flex-col"
       >
         <button
           id="cerrarModal"
@@ -69,22 +68,68 @@
         >
           &times;
         </button>
-
-        <img
-          id="modalImagen"
-          src=""
-          alt="Imagen del evento"
-          class="w-full h-64 object-cover rounded-md mb-4"
-        />
-        <h3 id="modalTitulo" class="text-xl font-bold mb-4 text-gray-800">
-          Título del evento
-        </h3>
-        <p id="modalDescripcion" class="text-gray-700 whitespace-pre-line"></p>
+        <!-- Zona scroll sólo para la imagen -->
+        <div
+          class="w-full flex justify-center bg-gray-50 rounded-t-xl max-h-[65vh] overflow-y-auto p-4"
+        >
+          <img
+            id="modalImagen"
+            src=""
+            alt="Imagen del evento"
+            class="max-w-full max-h-[60vh] rounded-lg shadow"
+            style="object-fit: contain"
+          />
+        </div>
+        <div class="p-6 pt-4 flex flex-col gap-2">
+          <h3 id="modalTitulo" class="text-xl font-bold mb-2 text-gray-800">
+            Título del evento
+          </h3>
+          <p
+            id="modalDescripcion"
+            class="text-gray-700 whitespace-pre-line"
+          ></p>
+        </div>
       </div>
     </div>
 
     <!-- Script -->
-    <script src="/js/modaleventos.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("modal");
+        const modalDescripcion = document.getElementById("modalDescripcion");
+        const modalImagen = document.getElementById("modalImagen");
+        const modalTitulo = document.getElementById("modalTitulo");
+        const cerrarModal = document.getElementById("cerrarModal");
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            modal.classList.add("hidden");
+          }
+        });
+
+        document.querySelectorAll(".card-evento").forEach((card) => {
+          card.addEventListener("click", () => {
+            const full = card.dataset.full;
+            const img = card.dataset.img;
+            const titulo = card.dataset.titulo;
+
+            modalDescripcion.textContent = full;
+            modalImagen.src = img;
+            modalTitulo.textContent = titulo;
+            modal.classList.remove("hidden");
+          });
+        });
+
+        cerrarModal.addEventListener("click", () => {
+          modal.classList.add("hidden");
+        });
+
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            modal.classList.add("hidden");
+          }
+        });
+      });
+    </script>
     <script src="/js/indexjs.js"></script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 const radioPlayer = document.getElementById("radioPlayer");
 const customPlay = document.getElementById("customPlay");
-const customPlay2 = document.getElementById("customPlay2"); // segundo botón
+const customPlay2Desk = document.getElementById("customPlay2Desk");
+const customPlay2Mov = document.getElementById("customPlay2Mov");
 const playIcon = document.getElementById("playIcon");
 
 let isPlaying = false;
@@ -26,33 +27,9 @@ function togglePlay() {
   }
 }
 
-const menuToggle = document.getElementById("menu-toggle");
-const menu = document.getElementById("menu");
-
-menuToggle.addEventListener("click", () => {
-  menu.classList.toggle("hidden");
-
-  if (!menu.classList.contains("hidden")) {
-    setTimeout(() => {
-      menu.classList.remove("opacity-0", "scale-95");
-      menu.classList.add("opacity-100", "scale-100");
-      menu.classList.remove("bg-white/30", "backdrop-blur-md");
-      menu.classList.add("bg-white");
-    }, 10);
-  } else {
-    menu.classList.remove("opacity-100", "scale-100", "bg-white");
-    menu.classList.add(
-      "opacity-0",
-      "scale-95",
-      "bg-white/30",
-      "backdrop-blur-md"
-    );
-  }
-
-  menuToggle.classList.toggle("active");
-});
-customPlay2.addEventListener("click", togglePlay);
-customPlay.addEventListener("click", togglePlay);
+if (customPlay) customPlay.addEventListener("click", togglePlay);
+if (customPlay2Desk) customPlay2Desk.addEventListener("click", togglePlay);
+if (customPlay2Mov) customPlay2Mov.addEventListener("click", togglePlay);
 
 // --------- PC ---------
 let currentPC = 0;

@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
-
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/indexcss.css" />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
   </head>
   <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
     <div class="max-w-6xl mx-auto p-4 sm:p-6 w-full flex-1">
@@ -332,7 +331,6 @@
                 type="text"
                 name="titulo"
                 value="<%= cupon.titulo %>"
-                required
                 class="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-300"
               />
               <textarea
@@ -346,7 +344,6 @@
                 type="text"
                 name="codigo_cupon"
                 value="<%= cupon.codigo_cupon %>"
-                required
                 class="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-300"
               />
 

@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import Evento from "../models/eventoModel.js";
 import Cupon from "../models/cuponModel.js";
 import Patrocinador from "../models/patrocinadorModel.js";
+import Revista from "../models/revistaModel.js";
 
 export const mostrarLogin = (req, res) => {
   res.render("login", { error: null });
@@ -43,21 +44,30 @@ export const logout = (req, res) => {
   });
 };
 
+// controllers/authController.js - mostrarSuperAdmin
 export const mostrarSuperAdmin = async (req, res) => {
   try {
-    const usuarios = await User.findAll({
-      attributes: ["id", "username", "role", "password"],
-    });
-    const listaEventos = await Evento.findAll(); // Aquí cargas eventos
-    const listaCupones = await Cupon.findAll(); // Aquí cupones
-    const listaPatrocinadores = await Patrocinador.findAll(); // <--- AGREGA ESTO
+    const [
+      usuarios,
+      listaEventos,
+      listaCupones,
+      listaPatrocinadores,
+      listaRevistas,
+    ] = await Promise.all([
+      User.findAll({ attributes: ["id", "username", "role", "password"] }),
+      Evento.findAll(),
+      Cupon.findAll(),
+      Patrocinador.findAll(),
+      Revista.findAll({ order: [["fecha_publicacion", "DESC"]] }), // Agregar esta línea
+    ]);
 
     res.render("superadmin", {
       user: req.session.user,
       usuarios,
-      listaEventos, // envías eventos a la vista
-      listaCupones, // envías cupones a la vista
+      listaEventos,
+      listaCupones,
       listaPatrocinadores,
+      listaRevistas, // Agregar esta línea
       error: null,
     });
   } catch (error) {
@@ -65,6 +75,7 @@ export const mostrarSuperAdmin = async (req, res) => {
     res.status(500).send("Error cargando la página de superadmin");
   }
 };
+
 export const crearAdmin = async (req, res) => {
   const { username, password } = req.body;
 

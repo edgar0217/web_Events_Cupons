@@ -1,0 +1,83 @@
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="/js/adm.js"></script>
+<script>
+  // Mostrar el nombre del archivo seleccionado para crear
+  function updateFileNameCrear() {
+    const input = document.getElementById("inputImagenPatrocinador");
+    const fileNameSpan = document.getElementById("fileNameCrear");
+    if (input.files && input.files[0]) {
+      fileNameSpan.textContent = input.files[0].name;
+    }
+  }
+
+  // Mostrar el nombre del archivo seleccionado para editar
+  function updateFileNameEdit(id) {
+    const input = document.getElementById("inputImagenEdit" + id);
+    const fileNameSpan = document.getElementById("fileNameEdit" + id);
+    if (input.files && input.files[0]) {
+      fileNameSpan.textContent = input.files[0].name;
+    }
+  }
+
+  // Confirmación con SweetAlert2 al crear patrocinador
+  function confirmCrearPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Crear patrocinador?",
+      text: "¿Seguro que quieres agregar este patrocinador?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#6366F1",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, crear",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false; // evita envío por default
+  }
+
+  // Confirmación con SweetAlert2 al editar patrocinador
+  function confirmEditarPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Guardar cambios?",
+      text: "¿Seguro que quieres guardar los cambios?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#F59E42",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false;
+  }
+
+  // Confirmación con SweetAlert2 al eliminar patrocinador
+  function confirmarEliminarPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Eliminar patrocinador?",
+      text: "Esta acción no se puede deshacer",
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false;
+  }
+</script>

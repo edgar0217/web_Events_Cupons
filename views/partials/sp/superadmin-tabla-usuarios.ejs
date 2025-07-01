@@ -1,0 +1,207 @@
+<!-- Sección Usuarios -->
+<section
+  data-aos="fade-up"
+  class="bg-white p-6 sm:p-8 rounded-2xl shadow mb-10"
+>
+  <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-blue-700">
+    Usuarios Registrados
+  </h2>
+
+  <!-- Tabla visible solo en sm+ -->
+  <div class="hidden sm:block overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-200">
+      <thead>
+        <tr class="bg-blue-100 text-blue-800 uppercase text-sm font-semibold">
+          <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
+          <th class="border border-gray-300 px-4 py-2 text-left">Username</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Rol</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">
+            Contraseña
+          </th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Editar</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuarios.forEach((usuario) => { %>
+        <tr class="even:bg-gray-50">
+          <td
+            class="border border-gray-300 px-4 py-2 text-center font-mono align-middle text-sm"
+          >
+            <%= usuario.id %>
+          </td>
+          <td class="border border-gray-300 px-4 py-2 text-left align-middle">
+            <%= usuario.username %>
+          </td>
+          <td
+            class="border border-gray-300 px-4 py-2 text-center font-semibold capitalize align-middle"
+          >
+            <%= usuario.role %>
+          </td>
+          <td class="border border-gray-300 px-4 py-2 relative align-middle">
+            <input
+              type="password"
+              readonly
+              class="w-full font-mono text-sm border rounded px-2 py-1 pr-10"
+              value="<%= usuario.password %>"
+              id="pass-<%= usuario.id %>"
+            />
+            <button
+              type="button"
+              onclick="togglePassword(<%= usuario.id %>)"
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
+              title="Mostrar / Ocultar contraseña"
+            >
+              👁️
+            </button>
+          </td>
+          <td class="border border-gray-300 px-4 py-2 align-middle">
+            <form
+              action="/superadmin/editar/<%= usuario.id %>"
+              method="POST"
+              class="space-y-2"
+            >
+              <input
+                type="text"
+                name="username"
+                placeholder="Nuevo username"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                value="<%= usuario.username %>"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Nueva contraseña"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              />
+              <% if (usuario.role === "admin") { %>
+              <span class="font-semibold">admin</span>
+              <input type="hidden" name="role" value="admin" />
+              <% } else { %>
+              <span class="font-semibold">superadmin</span>
+              <input type="hidden" name="role" value="superadmin" />
+              <% } %>
+              <button
+                type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-semibold transition"
+              >
+                Actualizar
+              </button>
+              <input type="hidden" name="redirectTo" value="/superadmin" />
+            </form>
+          </td>
+          <td class="border border-gray-300 px-4 py-2 align-middle text-center">
+            <% if (usuario.role === "admin") { %>
+            <form
+              id="form-eliminar-usuario-<%= usuario.id %>"
+              action="/superadmin/eliminar/<%= usuario.id %>"
+              method="POST"
+              class="mt-2"
+            >
+              <input type="hidden" name="redirectTo" value="/superadmin" />
+              <button
+                type="button"
+                onclick="confirmarEliminacionUsuario('<%= usuario.id %>')"
+                class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md font-medium transition"
+              >
+                Eliminar
+              </button>
+            </form>
+            <% } else { %>
+            <span class="text-gray-400 italic select-none">No permitido</span>
+            <% } %>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Cards móviles (visible solo xs) -->
+  <div class="sm:hidden space-y-6">
+    <% usuarios.forEach((usuario) => { %>
+    <div class="border border-gray-300 rounded-xl p-4 shadow-sm bg-gray-50">
+      <div class="flex justify-between items-center mb-2">
+        <div>
+          <p class="text-sm font-mono text-gray-600">ID: <%= usuario.id %></p>
+          <p class="font-semibold text-lg"><%= usuario.username %></p>
+          <p class="capitalize text-sm text-gray-700"><%= usuario.role %></p>
+        </div>
+      </div>
+
+      <div class="relative mb-2">
+        <input
+          type="password"
+          readonly
+          class="w-full font-mono text-sm border rounded px-2 py-1 pr-10"
+          value="<%= usuario.password %>"
+          id="pass-mobile-<%= usuario.id %>"
+        />
+        <button
+          type="button"
+          onclick="togglePasswordMobile(<%= usuario.id %>)"
+          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-900"
+          title="Mostrar / Ocultar contraseña"
+        >
+          👁️
+        </button>
+      </div>
+
+      <form
+        action="/superadmin/editar/<%= usuario.id %>"
+        method="POST"
+        class="space-y-2 mb-2"
+      >
+        <input
+          type="text"
+          name="username"
+          placeholder="Nuevo username"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          value="<%= usuario.username %>"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Nueva contraseña"
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        />
+        <% if (usuario.role === "admin") { %>
+        <span class="font-semibold">admin</span>
+        <input type="hidden" name="role" value="admin" />
+        <% } else { %>
+        <span class="font-semibold">superadmin</span>
+        <input type="hidden" name="role" value="superadmin" />
+        <% } %>
+        <button
+          type="submit"
+          class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-semibold transition"
+        >
+          Actualizar
+        </button>
+        <input type="hidden" name="redirectTo" value="/superadmin" />
+      </form>
+
+      <% if (usuario.role === "admin") { %>
+      <form
+        id="form-eliminar-usuario-mobile-<%= usuario.id %>"
+        action="/superadmin/eliminar/<%= usuario.id %>"
+        method="POST"
+      >
+        <input type="hidden" name="redirectTo" value="/superadmin" />
+        <button
+          type="button"
+          onclick="confirmarEliminacionUsuarioMobile('<%= usuario.id %>')"
+          class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md font-medium transition"
+        >
+          Eliminar
+        </button>
+      </form>
+      <% } else { %>
+      <span class="text-gray-400 italic select-none">No permitido</span>
+      <% } %>
+    </div>
+    <% }); %>
+  </div>
+</section>

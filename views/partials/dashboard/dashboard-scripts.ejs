@@ -1,0 +1,143 @@
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="/js/alertas.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: true,
+  });
+
+  // Función para mostrar preview de imagen seleccionada y limpiar input hermano
+  function setupPreview(inputId, previewId, inputHermanoId) {
+    const input = document.getElementById(inputId);
+    const inputHermano = inputHermanoId ? document.getElementById(inputHermanoId) : null;
+    const previewContainer = document.getElementById(previewId);
+    if (!input || !previewContainer) return;
+
+    input.addEventListener('change', () => {
+      // Limpiar input hermano y su preview si existe
+      if (input.files && input.files.length > 0 && inputHermano) {
+        inputHermano.value = '';
+      }
+
+      if (!input.files || !input.files[0]) {
+        previewContainer.innerHTML = '';
+        return;
+      }
+      const file = input.files[0];
+      if (!file.type.startsWith('image/')) {
+        previewContainer.innerHTML = 'Archivo no es una imagen válida';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewContainer.innerHTML = `<img src="${e.target.result}" alt="Preview" class="preview-image" />`;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Previews formulario Crear Evento
+  setupPreview('fileInputEventoSelector', 'previewEventoCrear', 'fileInputEventoCamara');
+  setupPreview('fileInputEventoCamara', 'previewEventoCrear', 'fileInputEventoSelector');
+
+  // Previews formulario Crear Cupón
+  setupPreview('fileInputCuponSelector', 'previewCuponCrear', 'fileInputCuponCamara');
+  setupPreview('fileInputCuponCamara', 'previewCuponCrear', 'fileInputCuponSelector');
+
+  // Previews formularios Edición Eventos
+  <% if (typeof listaEventos !== 'undefined') { %>
+    <% listaEventos.forEach(evento => { %>
+      setupPreview('fileInputEventoSelectorEdit<%= evento.id %>', 'previewEventoEdit<%= evento.id %>', 'fileInputEventoCamaraEdit<%= evento.id %>');
+      setupPreview('fileInputEventoCamaraEdit<%= evento.id %>', 'previewEventoEdit<%= evento.id %>', 'fileInputEventoSelectorEdit<%= evento.id %>');
+    <% }) %>
+  <% } %>
+
+  // Previews formularios Edición Cupones
+  <% if (typeof listaCupones !== 'undefined') { %>
+    <% listaCupones.forEach(cupon => { %>
+      setupPreview('fileInputCuponSelectorEdit<%= cupon.id %>', 'previewCuponEdit<%= cupon.id %>', 'fileInputCuponCamaraEdit<%= cupon.id %>');
+      setupPreview('fileInputCuponCamaraEdit<%= cupon.id %>', 'previewCuponEdit<%= cupon.id %>', 'fileInputCuponSelectorEdit<%= cupon.id %>');
+    <% }) %>
+  <% } %>
+</script>
+<script>
+  // Mostrar el nombre del archivo seleccionado para crear
+  function updateFileNameCrear() {
+    const input = document.getElementById("inputImagenPatrocinador");
+    const fileNameSpan = document.getElementById("fileNameCrear");
+    if (input.files && input.files[0]) {
+      fileNameSpan.textContent = input.files[0].name;
+    }
+  }
+
+  // Mostrar el nombre del archivo seleccionado para editar
+  function updateFileNameEdit(id) {
+    const input = document.getElementById("inputImagenEdit" + id);
+    const fileNameSpan = document.getElementById("fileNameEdit" + id);
+    if (input.files && input.files[0]) {
+      fileNameSpan.textContent = input.files[0].name;
+    }
+  }
+
+  // Confirmación con SweetAlert2 al crear patrocinador
+  function confirmCrearPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Crear patrocinador?",
+      text: "¿Seguro que quieres agregar este patrocinador?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#6366F1",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, crear",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false;
+  }
+
+  // Confirmación con SweetAlert2 al editar patrocinador
+  function confirmEditarPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Guardar cambios?",
+      text: "¿Seguro que quieres guardar los cambios?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#F59E42",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false;
+  }
+
+  // Confirmación con SweetAlert2 al eliminar patrocinador
+  function confirmarEliminarPatrocinador(e) {
+    e.preventDefault();
+    Swal.fire({
+      title: "¿Eliminar patrocinador?",
+      text: "Esta acción no se puede deshacer",
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        e.target.submit();
+      }
+    });
+    return false;
+  }
+</script>

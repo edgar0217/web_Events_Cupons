@@ -10,6 +10,7 @@ import noCache from "./middlewares/noCache.js";
 import sessionTimeout from "./middlewares/sessionTimeout.js";
 import authRoutes from "./routes/authRoutes.js";
 import patrocinadorRoutes from "./routes/patrocinadorRoutes.js";
+import revistaRoutes from "./routes/revistaRoutes.js";
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use("/", authRoutes);
 app.use("/", indexRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", patrocinadorRoutes);
+app.use("/", revistaRoutes);
 
 app.use((req, res) => {
   res.status(404).render("404");

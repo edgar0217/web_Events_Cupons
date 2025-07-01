@@ -1,0 +1,110 @@
+<!-- Eventos Publicados -->
+<section class="mb-16">
+  <h2
+    class="text-2xl sm:text-3xl font-bold mb-6 text-slate-700"
+    data-aos="fade-right"
+  >
+    📅 Eventos Publicados
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% listaEventos.forEach(evento => { %>
+    <div
+      class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition"
+      data-aos="fade-up"
+    >
+      <img
+        src="<%= evento.imagen_url %>"
+        alt="Evento"
+        class="w-full h-40 object-cover rounded-lg mb-3"
+      />
+      <h3 class="text-xl font-semibold mb-1"><%= evento.titulo %></h3>
+      <p class="text-sm text-gray-600 mb-3"><%= evento.descripcion %></p>
+
+      <!-- Formulario Editar -->
+      <form
+        action="/eventos/<%= evento.id %>/edit"
+        method="POST"
+        enctype="multipart/form-data"
+        class="space-y-2"
+      >
+        <input
+          type="text"
+          name="titulo"
+          value="<%= evento.titulo %>"
+          required
+          class="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-300"
+        />
+        <textarea
+          name="descripcion"
+          class="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-300"
+        >
+<%= evento.descripcion %></textarea
+        >
+
+        <!-- Única Preview edición Evento -->
+        <div
+          id="previewEventoEdit<%= evento.id %>"
+          class="mb-4 flex justify-center"
+        ></div>
+
+        <div class="flex gap-4">
+          <!-- Botón Seleccionar Archivo Edición -->
+          <div>
+            <input
+              type="file"
+              name="imagen"
+              accept="image/*"
+              id="fileInputEventoSelectorEdit<%= evento.id %>"
+            />
+            <label
+              for="fileInputEventoSelectorEdit<%= evento.id %>"
+              class="cursor-pointer inline-block bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition select-none"
+            >
+              Seleccionar archivo
+            </label>
+          </div>
+
+          <!-- Botón Tomar Foto Edición -->
+          <div>
+            <input
+              type="file"
+              name="imagen"
+              accept="image/*"
+              capture="environment"
+              id="fileInputEventoCamaraEdit<%= evento.id %>"
+            />
+            <label
+              for="fileInputEventoCamaraEdit<%= evento.id %>"
+              class="cursor-pointer inline-block bg-yellow-600 text-white py-2 px-4 rounded-md hover:bg-yellow-700 transition select-none"
+            >
+              📷 Tomar Foto
+            </label>
+          </div>
+        </div>
+
+        <button
+          class="w-full bg-yellow-500 text-white py-2 rounded-md hover:bg-yellow-600 font-medium"
+        >
+          Guardar Cambios
+        </button>
+      </form>
+
+      <!-- Botón Eliminar -->
+      <form
+        id="form-eliminar-<%= evento.id %>"
+        action="/eventos/<%= evento.id %>/delete"
+        method="POST"
+        class="mt-2"
+      >
+        <button
+          type="button"
+          onclick="confirmarEliminacion('<%= evento.id %>')"
+          class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 font-medium"
+        >
+          Eliminar Evento
+        </button>
+      </form>
+    </div>
+    <% }) %>
+  </div>
+</section>

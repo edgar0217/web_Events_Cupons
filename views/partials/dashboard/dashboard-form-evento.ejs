@@ -1,0 +1,72 @@
+<!-- Formulario de Crear Evento -->
+<section
+  data-aos="fade-up"
+  class="bg-white p-6 sm:p-8 rounded-2xl shadow mb-10"
+>
+  <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-blue-700">
+    ➕ Crear Nuevo Evento
+  </h2>
+  <form
+    action="/eventos"
+    method="POST"
+    enctype="multipart/form-data"
+    class="space-y-4"
+  >
+    <input
+      type="text"
+      name="titulo"
+      placeholder="Título del evento"
+      required
+      class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+    />
+    <textarea
+      name="descripcion"
+      placeholder="Descripción"
+      class="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+    ></textarea>
+
+    <!-- Preview para Crear Evento -->
+    <div id="previewEventoCrear" class="mb-4 flex justify-center"></div>
+
+    <div class="flex gap-4">
+      <!-- Botón Seleccionar Archivo -->
+      <div>
+        <input
+          type="file"
+          name="imagen"
+          accept="image/*"
+          id="fileInputEventoSelector"
+        />
+        <label
+          for="fileInputEventoSelector"
+          class="cursor-pointer inline-block bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition select-none"
+        >
+          Seleccionar archivo
+        </label>
+      </div>
+
+      <!-- Botón Tomar Foto -->
+      <div>
+        <input
+          type="file"
+          name="imagen"
+          accept="image/*"
+          capture="environment"
+          id="fileInputEventoCamara"
+        />
+        <label
+          for="fileInputEventoCamara"
+          class="cursor-pointer inline-block bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition select-none"
+        >
+          📷 Tomar Foto
+        </label>
+      </div>
+    </div>
+
+    <button
+      class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition font-semibold"
+    >
+      Publicar Evento
+    </button>
+  </form>
+</section>

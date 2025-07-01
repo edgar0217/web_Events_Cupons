@@ -1,0 +1,175 @@
+<!-- views/partials/dashboard/dashboard-lista-revistas.ejs -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-8">
+  <h2 class="text-xl font-semibold mb-4">Revistas Publicadas</h2>
+
+  <% if (listaRevistas && listaRevistas.length > 0) { %>
+  <div class="space-y-4">
+    <% listaRevistas.forEach(revista => { %>
+    <div class="border rounded-lg p-4 flex flex-col md:flex-row gap-4">
+      <div class="flex-shrink-0">
+        <img
+          src="<%= revista.portada_url %>"
+          alt="Portada <%= revista.titulo %>"
+          class="w-32 h-48 object-cover rounded"
+        />
+      </div>
+
+      <div class="flex-grow">
+        <h3 class="text-lg font-medium"><%= revista.titulo %></h3>
+        <% if (revista.descripcion) { %>
+        <p class="text-gray-600 mt-1"><%= revista.descripcion %></p>
+        <% } %>
+        <p class="text-sm text-gray-500 mt-2">
+          Publicado: <%= new
+          Date(revista.fecha_publicacion).toLocaleDateString() %>
+        </p>
+      </div>
+
+      <div
+        class="flex flex-col space-y-2 md:space-y-0 md:space-x-2 md:flex-row md:items-center"
+      >
+        <!-- Formulario para editar -->
+        <form
+          action="/revistas/<%= revista.id %>/edit"
+          method="POST"
+          enctype="multipart/form-data"
+          class="flex flex-col space-y-2"
+        >
+          <input type="hidden" name="redirectTo" value="/dashboard" />
+
+          <button
+            type="button"
+            onclick="document.getElementById('editModal<%= revista.id %>').classList.remove('hidden')"
+            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+          >
+            Editar
+          </button>
+
+          <!-- Modal de edición -->
+          <div
+            id="editModal<%= revista.id %>"
+            class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4"
+          >
+            <div class="bg-white rounded-lg p-6 w-full max-w-2xl">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium">Editar Revista</h3>
+                <button
+                  onclick="document.getElementById('editModal<%= revista.id %>').classList.add('hidden')"
+                  class="text-gray-500 hover:text-gray-700"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700"
+                    >Título</label
+                  >
+                  <input
+                    type="text"
+                    name="titulo"
+                    value="<%= revista.titulo %>"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700"
+                    >Descripción</label
+                  >
+                  <textarea
+                    name="descripcion"
+                    rows="3"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  >
+<%= revista.descripcion %></textarea
+                  >
+                </div>
+
+                <div class="flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    onclick="document.getElementById('editModal<%= revista.id %>').classList.add('hidden')"
+                    class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Formulario para eliminar -->
+        <form
+          action="/revistas/<%= revista.id %>/delete"
+          method="POST"
+          class="form-eliminar"
+        >
+          <input type="hidden" name="redirectTo" value="/dashboard" />
+          <button
+            type="button"
+            class="btn-eliminar inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Eliminar
+          </button>
+        </form>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+  <p class="text-gray-500">No hay revistas publicadas aún.</p>
+  <% } %>
+</div>
+
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Script para confirmar eliminación -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar");
+
+    botonesEliminar.forEach((boton) => {
+      boton.addEventListener("click", function () {
+        const formulario = this.closest("form");
+
+        Swal.fire({
+          title: "¿Estás seguro?",
+          text: "Esta acción eliminará la revista permanentemente.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#e3342f",
+          cancelButtonColor: "#6b7280",
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            formulario.submit();
+          }
+        });
+      });
+    });
+  });
+</script>

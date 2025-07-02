@@ -4,7 +4,8 @@
   </h3>
 
   <% if (listaRevistas && listaRevistas.length > 0) { %>
-  <div class="overflow-x-auto">
+  <!-- Desktop Table -->
+  <div class="hidden md:block overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
@@ -55,15 +56,12 @@
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
             <div class="flex space-x-2">
-              <!-- Editar -->
               <button
                 onclick="document.getElementById('editModal<%= revista.id %>').showModal()"
                 class="text-indigo-600 hover:text-indigo-900"
               >
                 <i class="bx bx-edit"></i> Editar
               </button>
-
-              <!-- Eliminar -->
               <form
                 action="/revistas/<%= revista.id %>/delete"
                 method="POST"
@@ -80,6 +78,52 @@
         <% }); %>
       </tbody>
     </table>
+  </div>
+
+  <!-- Mobile Cards -->
+  <div class="md:hidden space-y-4">
+    <% listaRevistas.forEach(revista => { %>
+    <div class="border rounded-lg p-4 shadow-sm">
+      <div class="flex items-center gap-4 mb-2">
+        <img
+          src="<%= revista.portada_url %>"
+          alt="Portada"
+          class="h-16 w-16 object-cover rounded-md"
+        />
+        <div class="flex-1">
+          <h4 class="text-base font-semibold text-gray-800">
+            <%= revista.titulo %>
+          </h4>
+          <% if (revista.descripcion) { %>
+          <p class="text-sm text-gray-500 truncate">
+            <%= revista.descripcion %>
+          </p>
+          <% } %>
+          <p class="text-sm text-gray-400 mt-1">
+            <%= new Date(revista.fecha_publicacion).toLocaleDateString() %>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-3">
+        <button
+          onclick="document.getElementById('editModal<%= revista.id %>').showModal()"
+          class="text-indigo-600 hover:text-indigo-900 text-sm"
+        >
+          <i class="bx bx-edit"></i> Editar
+        </button>
+        <form
+          action="/revistas/<%= revista.id %>/delete"
+          method="POST"
+          class="form-eliminar inline"
+        >
+          <input type="hidden" name="redirectTo" value="/superadmin" />
+          <button type="submit" class="text-red-600 hover:text-red-900 text-sm">
+            <i class="bx bx-trash"></i> Eliminar
+          </button>
+        </form>
+      </div>
+    </div>
+    <% }); %>
   </div>
   <% } else { %>
   <p class="text-gray-500 py-4">No hay revistas publicadas aún.</p>
@@ -100,7 +144,6 @@ listaRevistas.forEach(revista => { %>
     class="form-editar"
   >
     <input type="hidden" name="redirectTo" value="/superadmin" />
-
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-lg font-semibold">Editar Revista</h3>
       <button
@@ -111,10 +154,7 @@ listaRevistas.forEach(revista => { %>
         <i class="bx bx-x text-xl"></i>
       </button>
     </div>
-
-    <!-- Campos del formulario de edición -->
     <div class="space-y-4">
-      <!-- Título -->
       <div>
         <label class="block text-sm font-medium text-gray-700">Título *</label>
         <input
@@ -125,8 +165,6 @@ listaRevistas.forEach(revista => { %>
           class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2"
         />
       </div>
-
-      <!-- Descripción -->
       <div>
         <label class="block text-sm font-medium text-gray-700"
           >Descripción</label
@@ -139,7 +177,6 @@ listaRevistas.forEach(revista => { %>
 <%= revista.descripcion %></textarea
         >
       </div>
-
       <div class="flex justify-end space-x-3 pt-4">
         <button
           type="button"
@@ -164,7 +201,6 @@ listaRevistas.forEach(revista => { %>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-  // Confirmación SweetAlert para eliminar
   document.querySelectorAll(".form-eliminar").forEach((form) => {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -184,7 +220,6 @@ listaRevistas.forEach(revista => { %>
     });
   });
 
-  // Confirmación SweetAlert para editar (formularios dentro de dialogs)
   document.querySelectorAll(".form-editar").forEach((form) => {
     form.addEventListener("submit", function (e) {
       e.preventDefault();

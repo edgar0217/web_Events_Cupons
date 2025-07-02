@@ -105,8 +105,8 @@
 
     <input type="hidden" name="redirectTo" value="/superadmin" />
 
-    <!-- Botón -->
-    <div class="pt-4">
+    <!-- Botones -->
+    <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
       <button
         type="button"
         id="btn-enviar-revista"
@@ -114,6 +114,15 @@
       >
         <i class="bx bx-cloud-upload text-xl"></i>
         Subir Revista
+      </button>
+
+      <button
+        type="reset"
+        id="btn-limpiar-formulario"
+        class="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-xl shadow-md transition"
+      >
+        <i class="bx bx-trash text-xl"></i>
+        Limpiar Formulario
       </button>
     </div>
   </form>
@@ -164,5 +173,15 @@
           document.getElementById("form-nueva-revista").submit();
         }
       });
+    });
+</script>
+<script>
+  document
+    .getElementById("btn-limpiar-formulario")
+    .addEventListener("click", function () {
+      // Limpiar previews
+      document.getElementById("preview-portada").src = "";
+      document.getElementById("preview-pdf").src = "";
+      document.getElementById("pdf-preview").classList.add("hidden");
     });
 </script>

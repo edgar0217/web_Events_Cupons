@@ -82,25 +82,26 @@ export const crearRevista = async (req, res) => {
 // En la función editarRevista
 export const editarRevista = async (req, res) => {
   const { id } = req.params;
-  const { titulo, descripcion } = req.body;
+  const { titulo, descripcion, redirectTo } = req.body; // 👈 aquí obtienes redirectTo
   const portada = req.files?.portada?.[0];
   const archivo = req.files?.archivo?.[0];
 
+  const redireccion = redirectTo || "/dashboard"; // 👈 fallback si no viene
+
   try {
     const revista = await Revista.findByPk(id);
-    if (!revista) return res.redirect("/dashboard?error=revista_no_encontrada");
+    if (!revista)
+      return res.redirect(`${redireccion}?error=revista_no_encontrada`);
 
     revista.titulo = titulo;
     revista.descripcion = descripcion;
 
     if (portada) {
-      // Eliminar portada anterior...
       revista.portada_url = portada.path;
       revista.portada_public_id = portada.filename;
     }
 
     if (archivo) {
-      // Eliminar PDF anterior...
       const archivoUrl = archivo.path.includes("res.cloudinary.com")
         ? archivo.path.replace("/upload/", "/upload/fl_attachment/")
         : archivo.path;
@@ -109,24 +110,26 @@ export const editarRevista = async (req, res) => {
     }
 
     await revista.save();
-    res.redirect("/dashboard?success=revista_actualizada");
+    res.redirect(`${redireccion}?success=revista_actualizada`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=editar_revista");
+    res.redirect(`${redireccion}?error=editar_revista`);
   }
 };
 
 // Eliminar revista
 export const eliminarRevista = async (req, res) => {
   const { id } = req.params;
+  const redirectTo =
+    req.body.redirectTo || req.query.redirectTo || "/dashboard";
 
   try {
     const revista = await Revista.findByPk(id);
     if (!revista) {
-      return res.redirect("/dashboard?error=revista_no_encontrada");
+      return res.redirect(`${redirectTo}?error=revista_no_encontrada`);
     }
 
-    // Eliminar archivos de Cloudinary
+    // Eliminar archivos en Cloudinary
     await Promise.all([
       cloudinary.uploader.destroy(revista.portada_public_id, {
         resource_type: "image",
@@ -137,9 +140,9 @@ export const eliminarRevista = async (req, res) => {
     ]);
 
     await revista.destroy();
-    res.redirect("/dashboard?success=revista_eliminada");
+    res.redirect(`${redirectTo}?success=revista_eliminada`);
   } catch (error) {
     console.error(error);
-    res.redirect("/dashboard?error=eliminar_revista");
+    res.redirect(`${redirectTo}?error=eliminar_revista`);
   }
 };

@@ -4,7 +4,6 @@ const customPlay2Desk = document.getElementById("customPlay2Desk");
 const customPlay2Mov = document.getElementById("customPlay2Mov");
 const playIcon = document.getElementById("playIcon");
 
-
 // Menu hamburguesa en móviles
 document.addEventListener("DOMContentLoaded", function () {
   const toggleBtn = document.getElementById("menu-toggle");
@@ -16,11 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-
-
-
-
 let isPlaying = false;
 
 function togglePlay() {

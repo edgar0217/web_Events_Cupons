@@ -8,7 +8,7 @@ export const protegerRuta = (req, res, next) => {
 };
 
 export const protegerSuperAdmin = (req, res, next) => {
-  console.log("Usuario en sesión:", req.session.user); // Para debug
+  console.log("Usuario en sesión:", req.session.user);
   if (req.session.user && req.session.user.role === "superadmin") {
     req.user = req.session.user;
     return next();

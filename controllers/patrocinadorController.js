@@ -92,3 +92,12 @@ export const eliminarPatrocinador = async (req, res) => {
     res.redirect(`${redirectPath}?error=eliminar_patrocinador`);
   }
 };
+
+//vista de patrocinadores publica
+export const vistaPatrocinador = async (req, res) => {
+  const listaPatrocinadoresVista = await Patrocinador.findAll();
+  res.render("patrocinador", {
+    listaPatrocinadores: listaPatrocinadoresVista,
+    nombrePagina: "Patrocinadores",
+  });
+};

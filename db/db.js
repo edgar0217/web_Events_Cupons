@@ -11,15 +11,15 @@ const db = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "mysql",
-    logging: false, // Desactiva los logs de consultas SQL en la consola
+    logging: false,
     define: {
       timestamps: true,
     },
     pool: {
-      max: 5, // Máximo número de conexiones que Sequelize puede mantener al mismo tiempo
-      min: 0, // Mínimo número de conexiones que se mantienen en el pool (aunque no haya consultas activas)
-      acquire: 30000, // Tiempo máximo que Sequelize esperará para obtener una conexión antes de lanzar un error
-      idle: 10000, // Tiempo que una conexión puede estar inactiva antes de ser cerrada
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
     },
   }
 );

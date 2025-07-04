@@ -58,7 +58,7 @@ export const mostrarSuperAdmin = async (req, res) => {
       Evento.findAll(),
       Cupon.findAll(),
       Patrocinador.findAll(),
-      Revista.findAll({ order: [["fecha_publicacion", "DESC"]] }), // Agregar esta línea
+      Revista.findAll({ order: [["fecha_publicacion", "DESC"]] }),
     ]);
 
     res.render("superadmin", {
@@ -67,7 +67,7 @@ export const mostrarSuperAdmin = async (req, res) => {
       listaEventos,
       listaCupones,
       listaPatrocinadores,
-      listaRevistas, // Agregar esta línea
+      listaRevistas,
       error: null,
     });
   } catch (error) {
@@ -111,7 +111,7 @@ export const editarUsuario = async (req, res) => {
       return res.redirect("/superadmin?error=permiso_denegado");
     }
 
-    // Solo superadmin puede cambiar rol (y solo si no es superadmin el usuario a editar)
+    // Solo superadmin puede cambiar rol
     if (
       req.session.user.role === "superadmin" &&
       usuario.role !== "superadmin" &&

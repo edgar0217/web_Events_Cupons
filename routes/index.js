@@ -6,6 +6,7 @@ import { mostrarCupones } from "../controllers/cuponController.js";
 import { mostrarNosotros } from "../controllers/nosotrosController.js";
 import { mostrarLogin, login, logout } from "../controllers/authController.js";
 import Patrocinador from "../models/patrocinadorModel.js";
+import { vistaPatrocinador } from "../controllers/patrocinadorController.js";
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
@@ -19,6 +20,7 @@ router.get("/", async (req, res) => {
 router.get("/eventos", mostrarFormulario);
 router.get("/nosotros", mostrarNosotros);
 router.get("/cupones", mostrarCupones);
+router.get("/patrocinadores", vistaPatrocinador);
 
 router.get("/login", mostrarLogin);
 router.post("/login", login);

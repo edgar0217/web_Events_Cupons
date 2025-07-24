@@ -1,16 +1,16 @@
-import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
-import indexRoutes from "./routes/index.js";
-import dashboardRoutes from "./routes/dashboardRoutes.js";
 import db from "./db/db.js";
-import noCache from "./middlewares/noCache.js";
-import sessionTimeout from "./middlewares/sessionTimeout.js";
+import indexRoutes from "./routes/index.js";
 import authRoutes from "./routes/authRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 import patrocinadorRoutes from "./routes/patrocinadorRoutes.js";
 import revistaRoutes from "./routes/revistaRoutes.js";
+import noCache from "./middlewares/noCache.js";
+import sessionTimeout from "./middlewares/sessionTimeout.js";
 
 dotenv.config();
 

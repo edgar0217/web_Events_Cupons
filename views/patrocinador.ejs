@@ -29,7 +29,7 @@
         >
           <% listaPatrocinadores.forEach(patrocinador => { %>
           <div
-            class="relative bg-white rounded-2xl shadow-md p-6 flex flex-col items-center hover:shadow-xl transition"
+            class="relative bg-white rounded-2xl shadow-md p-4 flex flex-col items-center hover:shadow-xl transition"
           >
             <button
               class="absolute top-3 right-3 text-gray-400 hover:text-indigo-600"
@@ -37,11 +37,15 @@
             >
               <i class="bx bx-info-circle text-2xl"></i>
             </button>
-            <img
-              src="<%= patrocinador.imagen_url %>"
-              alt="<%= patrocinador.nombre %>"
-              class="w-32 h-32 object-contain mb-4"
-            />
+            <div
+              class="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4"
+            >
+              <img
+                src="<%= patrocinador.imagen_url %>"
+                alt="<%= patrocinador.nombre %>"
+                class="w-full h-full object-contain"
+              />
+            </div>
             <h3 class="text-lg font-semibold text-gray-800 text-center mb-1">
               <%= patrocinador.nombre %>
             </h3>
@@ -57,23 +61,30 @@
     <!-- Modal -->
     <div
       id="modal"
-      class="fixed inset-0 bg-black/50 flex justify-center items-center hidden z-50"
+      class="fixed inset-0 bg-black/50 flex justify-center items-center hidden z-50 p-4"
     >
-      <div class="bg-white rounded-xl p-6 max-w-md w-full relative">
+      <div
+        class="bg-white rounded-xl max-w-3xl w-full relative overflow-y-auto max-h-[90vh]"
+      >
         <button
           onclick="closeModal()"
           class="absolute top-3 right-3 text-gray-500 hover:text-red-500"
         >
           <i class="bx bx-x text-2xl"></i>
         </button>
-        <img
-          id="modal-img"
-          src=""
-          alt=""
-          class="w-32 h-32 object-contain mx-auto mb-4"
-        />
-        <h3 id="modal-title" class="text-2xl font-bold text-center mb-2"></h3>
-        <p id="modal-description" class="text-gray-700 text-sm text-center"></p>
+        <div class="p-6 flex flex-col items-center">
+          <img
+            id="modal-img"
+            src=""
+            alt=""
+            class="w-full max-h-[70vh] object-contain mb-4"
+          />
+          <h3 id="modal-title" class="text-2xl font-bold text-center mb-2"></h3>
+          <p
+            id="modal-description"
+            class="text-gray-700 text-sm text-center"
+          ></p>
+        </div>
       </div>
     </div>
 

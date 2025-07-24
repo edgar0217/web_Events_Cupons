@@ -44,7 +44,6 @@ export const logout = (req, res) => {
   });
 };
 
-// controllers/authController.js - mostrarSuperAdmin
 export const mostrarSuperAdmin = async (req, res) => {
   try {
     const [
@@ -103,7 +102,6 @@ export const editarUsuario = async (req, res) => {
       return res.redirect("/superadmin?error=usuario_no_encontrado");
     }
 
-    // Validación: Solo superadmin puede editar superadmin
     if (
       usuario.role === "superadmin" &&
       req.session.user.role !== "superadmin"
@@ -111,7 +109,6 @@ export const editarUsuario = async (req, res) => {
       return res.redirect("/superadmin?error=permiso_denegado");
     }
 
-    // Solo superadmin puede cambiar rol
     if (
       req.session.user.role === "superadmin" &&
       usuario.role !== "superadmin" &&
